@@ -1,23 +1,37 @@
 function maxSequence(arr) {
-    let firstSequence = [];
-    let secondSquence = [];
+    let currSequence = [];
+    let newArr = [];
+    let longestArr = [];
+    let best = ;
 
     for (let i = 0; i < arr.length; i++) {
         let curNum = arr[i];
 
-        if (i == 0) {
-            if (arr[0] == arr[1]) {
-                firstSequence.push(curNum);
-            }
+        if (curNum == arr[i - 1] || curNum == arr[i + 1]) {
+            currSequence.push(curNum);
         }
+    }
+    for (let i = currSequence.length - 1; i >= 0; i--) {
+        let curDigit = currSequence[i];
 
-        if (curNum == arr[i - 1]) {
-            firstSequence.push(curNum);
-        }
 
     }
-    console.log(firstSequence);
+    console.log(newArr.join(' '));
 }
 
 
-maxSequence([1, 1, 1, 2, 3, 1, 3, 3]);
+maxSequence([2, 1, 1, 2, 3, 3, 2, 2, 2, 1]);
+
+
+// for (let j = i - 1; j >= 0; j--) {
+//     let curJ = currSequence[j]
+//     if (curDigit == curJ) {
+//         newArr.push(curDigit);
+//         newArr.push(currSequence[j]);
+//     }
+//     if (curDigit == newArr[j]) {
+//         newArr.push(curDigit);
+//         longestArr = newArr;
+//         newArr = [];
+//     }
+// }
