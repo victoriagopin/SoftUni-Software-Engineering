@@ -2,7 +2,7 @@ function maxSequence(arr) {
     let currSequence = [];
     let newArr = [];
     let longestArr = [];
-    let best = ;
+
 
     for (let i = 0; i < arr.length; i++) {
         let curNum = arr[i];
@@ -12,26 +12,36 @@ function maxSequence(arr) {
         }
     }
     for (let i = currSequence.length - 1; i >= 0; i--) {
-        let curDigit = currSequence[i];
+        let curDigit = currSequence.pop(currSequence[i]);
+
+        newArr.push(curDigit);
+
+        for (let j = currSequence.length - 1; j >= 0; j--) {
+            if (currSequence[j] != curDigit) {
+                break;
+            }
+            let curDigitOfj = currSequence.pop(currSequence[j]);
 
 
+            if (curDigit == curDigitOfj) {
+
+                newArr.push(curDigitOfj);
+            }
+        }
+        if (newArr.length >= longestArr.length) {
+            longestArr = newArr;
+            newArr = [];
+        } else {
+            newArr = [];
+        }
     }
-    console.log(newArr.join(' '));
+
+
+
+    console.log(longestArr.join(' '));
 }
 
 
-maxSequence([2, 1, 1, 2, 3, 3, 2, 2, 2, 1]);
+maxSequence([0, 1, 1, 5, 2, 2, 6, 3, 3]);
 
 
-// for (let j = i - 1; j >= 0; j--) {
-//     let curJ = currSequence[j]
-//     if (curDigit == curJ) {
-//         newArr.push(curDigit);
-//         newArr.push(currSequence[j]);
-//     }
-//     if (curDigit == newArr[j]) {
-//         newArr.push(curDigit);
-//         longestArr = newArr;
-//         newArr = [];
-//     }
-// }
