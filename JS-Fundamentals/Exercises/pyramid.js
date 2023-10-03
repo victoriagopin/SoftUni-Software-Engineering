@@ -50,3 +50,6 @@ function pyramid(base, increment) {
 }
 
 pyramid(12, 1)
+
+
+
