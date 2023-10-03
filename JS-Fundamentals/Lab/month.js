@@ -1,3 +1,6 @@
+// Write a program, that takes an integer as a parameter and prints the corresponding month. If the number is more
+// than 12 or less than 1 print "Error!"
+
 function month(num) {
     if (num == 1) {
         console.log('January');
