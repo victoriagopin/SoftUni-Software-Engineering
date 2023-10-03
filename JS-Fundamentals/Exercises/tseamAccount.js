@@ -52,9 +52,7 @@ function tseamAccount(arr) {
     console.log(petersGames.join(' '));
 }
 
-tseamAccount(['CS WoW Diablo',
-    'Uninstall XCOM',
-    'Update PeshoGame',
+tseamAccount(['WoW CS Diablo',
+    'Expansion CS-GO',
     'Update WoW',
-    'Expansion Civ-V',
     'Play!']);
