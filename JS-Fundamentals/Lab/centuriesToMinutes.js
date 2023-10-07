@@ -1,3 +1,6 @@
+// Write a program that receives a number of centuries and 
+// converts it to years, days, hours, and minutes.
+
 function centuriesToMinutes(centuries) {
     let years = centuries * 100;
     let days = Math.trunc(years * 365.2422);
