@@ -21,43 +21,55 @@
 // Each jump length will be an integer in the range [1 … 20].
 
 
-function celebrateValentineDay(input) {
-    let neighborhood = input.shift().split('@').map(Number);
-    let jumpCommands = input.slice(0, input.indexOf('Love!'));
+function heartDelivery(arr) {
+    let neighbourhood = arr.shift().split('@').map(Number);
+    let command = arr.shift();
+
     let position = 0;
 
-    for (let i = 0; i < jumpCommands.length; i++) {
-        let command = jumpCommands[i].split(' ');
-        let length = Number(command[1]);
-        position = (position + length) % neighborhood.length;
+    while (command != 'Love!') {
+        let tokens = command.split(' ');
+        let jumpLength = Number(tokens[1]);
 
-        if (neighborhood[position] === 0) {
-            console.log(`Place ${position} already had Valentine's day.`);
-        } else {
-            neighborhood[position] -= 2;
-            if (neighborhood[position] === 0) {
-                console.log(`Place ${position} has Valentine's day.`);
+        position = position + jumpLength;
+        if (position >= neighbourhood.length) {
+            position = 0;
+        }
+        if (position >= 0 && position < neighbourhood.length) {
+            if (neighbourhood[position] > 0) {
+                neighbourhood[position] -= 2;
+                if (neighbourhood[position] == 0) {
+                    console.log(`Place ${position} has Valentine's day.`);
+                }
+            } else {
+                console.log(`Place ${position} already had Valentine's day.`);
             }
+        }
+
+        command = arr.shift();
+    }
+
+    let failedPlaces = 0;
+    for (let house of neighbourhood) {
+        if (house != 0) {
+            failedPlaces++;
         }
     }
 
-    let notCelebrated = neighborhood.filter(x => x > 0).length;
-    if (notCelebrated === 0) {
+    console.log(`Cupid's last position was ${position}.`);
+    if (failedPlaces == 0) {
         console.log(`Mission was successful.`);
     } else {
-        console.log(`Cupid has failed ${notCelebrated} places.`);
+        console.log(`Cupid has failed ${failedPlaces} places.`);
     }
-    console.log(`Cupid's last position was ${position}.`);
 }
 
-celebrateValentineDay([
-    "2@4@2",
+heartDelivery(["2@4@2",
     "Jump 2",
     "Jump 2",
     "Jump 8",
     "Jump 3",
     "Jump 1",
-    "Love!"
-]);
+    "Love!"]);
 
 
