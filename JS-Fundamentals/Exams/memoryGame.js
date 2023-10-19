@@ -26,16 +26,14 @@ function memoryGame(arr) {
     let moves = 0;
 
     for (let el of arr) {
-        if (sequence.length == 0) {
+        if (sequence.length === 0) {
             break;
         }
         let tokens = el.split(' ');
         let indx1 = tokens[0];
         let indx2 = tokens[1];
 
-
-
-        if (indx1 < 0 || indx1 >= sequence.length || indx2 < 0 || indx2 >= sequence.length) {
+        if (indx1 < 0 || indx1 >= sequence.length || indx2 < 0 || indx2 >= sequence.length || indx1 === indx2) {
             moves++;
             let middle = Math.floor(sequence.length / 2);
             sequence.splice(middle, 0, `-${moves}a`);
@@ -45,22 +43,20 @@ function memoryGame(arr) {
             moves++;
             let el1 = sequence[indx1];
             let el2 = sequence[indx2];
-            if (el1 == el2) {
+            if (el1 === el2) {
                 sequence = sequence.filter((_, index) => index !== Math.max(+indx1, +indx2));
                 sequence = sequence.filter((_, index) => index !== Math.min(+indx1, +indx2));
-
                 console.log(`Congrats! You have found matching elements - ${el1}!`);
             } else {
                 console.log('Try again!');
-
             }
-
         }
     }
+
     if (sequence.length > 0) {
         console.log(`Sorry you lose :(`);
         console.log(sequence.join(' '));
-    } else if (sequence == 0) {
+    } else {
         console.log(`You have won in ${moves} turns!`);
     }
 }
