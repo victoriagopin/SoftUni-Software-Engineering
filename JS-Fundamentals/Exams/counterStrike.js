@@ -9,56 +9,6 @@
 // Output
 // The description contains the proper output messages for each case and the format they should be printed.
 
-
-// function counterStrike(arr) {
-//     let initialEnergy = arr.shift();
-//     initialEnergy = Number(initialEnergy);
-//     let command = arr.shift();
-//     let wonBattles = 0;
-//     // let everyThirdWonBattle = 0;
-
-//     while (initialEnergy > 0) {
-//         if (command == 'End of battle') {
-//             console.log(`Won battles: ${wonBattles}. Energy left: ${initialEnergy}`);
-//             break;
-//         } else {
-//             let distance = Number(command);
-//             if (initialEnergy - distance > 0) {
-//                 // everyThirdWonBattle++;
-//                 wonBattles++;
-//                 if (wonBattles % 3 == 0) {
-//                     initialEnergy += wonBattles;
-//                     // everyThirdWonBattle = 0;
-//                 }
-
-//                 initialEnergy -= distance;
-
-
-//             } else if (initialEnergy - distance == 0) {
-//                 wonBattles++;
-//                 initialEnergy -= distance;
-//             } else {
-//                 initialEnergy -= distance;
-//             }
-
-
-//         }
-//         command = arr.shift();
-//     }
-
-//     if (initialEnergy <= 0) {
-//         initialEnergy = 0;
-//         console.log(`Not enough energy! Game ends with ${wonBattles} won battles and ${initialEnergy} energy`);
-//     }
-// }
-
-// counterStrike((["200",
-//     "54",
-//     "14",
-//     "28",
-//     "13",
-//     "End of battle"]));
-
 function couterStrike(arr) {
     let energy = arr.shift();
     energy = Number(energy);
@@ -70,23 +20,25 @@ function couterStrike(arr) {
         if (command != 'End of battle') {
             let distance = Number(command);
 
-            let energyLeft = energy - distance;
 
-            if (energyLeft >= 0) {
+
+            if (energy >= distance) {
                 wonBattles++;
-                if (wonBattles % 3 == 0) {
-                    energy += wonBattles;
-                }
+
                 energy -= distance;
 
             } else {
-                energy = 0;
+
                 console.log(`Not enough energy! Game ends with ${wonBattles} won battles and ${energy} energy`);
                 break;
+            }
+            if (wonBattles % 3 == 0) {
+                energy += wonBattles;
             }
         } else if (command == 'End of battle') {
             console.log(`Won battles: ${wonBattles}. Energy left: ${energy}`);
         }
+
     }
 }
 
