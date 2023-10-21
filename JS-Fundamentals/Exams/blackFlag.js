@@ -25,14 +25,15 @@ function blackFlag(arr) {
         gainedPlunder += dailyPlunder;
         thirdDay++;
         fifthDay++;
-        if (fifthDay === 5) {
-            gainedPlunder -= gainedPlunder * 0.3;
-            fifthDay = 0;
-        }
         if (thirdDay === 3) {
             gainedPlunder += dailyPlunder * 0.5;
             thirdDay = 0;
         }
+        if (fifthDay === 5) {
+            gainedPlunder -= gainedPlunder * 0.3;
+            fifthDay = 0;
+        }
+
 
     }
 
