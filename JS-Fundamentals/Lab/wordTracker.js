@@ -8,13 +8,13 @@ function wordTracker(arr) {
 
     let occurrences = {};
 
+    for (let word of searchedWords) {
+        occurrences[word] = 0;
+    }
+
     for (let word of arr) {
-        if (searchedWords.includes(word)) {
-            if (word in occurrences) {
-                occurrences[word] += 1;
-            } else {
-                occurrences[word] = 1;
-            }
+        if (word in occurrences) {
+            occurrences[word]++;
         }
     }
 
@@ -28,5 +28,5 @@ function wordTracker(arr) {
 wordTracker([
     'is the',
     'first', 'sentence', 'Here', 'is',
-    'another', 'the', 'And', 'finally', 'the',
+    'another', 'the', 'the', 'the', 'the',
     'the', 'sentence']);
