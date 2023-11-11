@@ -13,7 +13,9 @@ function piccolo(arr) {
         let carNum = tokens.shift();
 
         if (command == 'IN') {
-            parking.push(carNum);
+            if (!parking.includes(carNum)) {
+                parking.push(carNum);
+            }
         } else {
             if (parking.includes(carNum)) {
                 let indx = parking.indexOf(carNum);
@@ -22,6 +24,7 @@ function piccolo(arr) {
         }
     }
 
+    parking.sort();
     if (parking.length == 0) {
         console.log(`Parking Lot is Empty`);
     } else {
