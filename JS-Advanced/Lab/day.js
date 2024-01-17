@@ -1,4 +1,3 @@
-
 function day(str) {
     switch (str) {
         case 'Monday':
@@ -29,4 +28,4 @@ function day(str) {
     }
 }
 
-day('Monday');
+day('Monday')

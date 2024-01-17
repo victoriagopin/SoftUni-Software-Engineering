@@ -6,4 +6,4 @@ function squareOfStars(n) {
     }
 }
 
-squareOfStars(2);
+squareOfStars(2)

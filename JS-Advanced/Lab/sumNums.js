@@ -9,4 +9,4 @@ function sumNums(n1, n2) {
     console.log(sum);
 }
 
-sumNums(-8, 20);
+sumNums('-8', '20')
