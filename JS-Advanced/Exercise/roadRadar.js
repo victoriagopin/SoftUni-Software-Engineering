@@ -17,7 +17,7 @@ function roadRadar(speed, area) {
         }
     } else if (area == 'interstate') {
         if (speed <= 90) {
-            console.log(`Driving ${speed} km/h in a 130 zone`);
+            console.log(`Driving ${speed} km/h in a 90 zone`);
         } else {
             let difference = speed - 90;
             if (difference <= 20) {
