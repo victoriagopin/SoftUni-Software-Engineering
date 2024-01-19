@@ -1,0 +1,5 @@
+function smallestTwoNums() {
+
+}
+
+smallestTwoNums();
