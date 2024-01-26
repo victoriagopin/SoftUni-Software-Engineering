@@ -1,5 +1,4 @@
 function solve() {
-  debugger
   let textArea = document.getElementById('input');
   const input = textArea.value;
   const output = document.getElementById('output');
