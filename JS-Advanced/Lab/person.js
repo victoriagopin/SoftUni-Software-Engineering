@@ -1,18 +1,18 @@
 class Person {
     firstName;
-    lastNmae;
+    lastName;
     age;
     email;
 
-    constructor(firstName, lastNmae, age, email) {
+    constructor(firstName, lastName, age, email) {
         this.firstName = firstName;
-        this.lastNmae = lastNmae;
+        this.lastNamee = lastName;
         this.age = age;
         this.email = email;
     }
 
     toString() {
-        retrun`${this.firstName} ${this.lastNmae} (age: ${this.age}, email: ${this.email})`
+        retrun`${this.firstName} ${this.lastName} (age: ${this.age}, email: ${this.email})`
     }
 }
 
