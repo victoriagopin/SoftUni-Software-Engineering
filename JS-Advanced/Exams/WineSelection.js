@@ -56,19 +56,18 @@ class WineSelection {
 
     cellarRevision(wineType) {
         if (!wineType) {
-            let result = [`You have space for ${this.space} bottles more.
-            You paid ${bill}$ for the wine.`]
+            let result = [`You have space for ${this.space} bottles more.`, `You paid ${this.bill}$ for the wine.`]
 
-            let sorted = this.wines.sort((a, b) => a[0].localeCompare(b[0]));
+            let sorted = this.wines.sort((a, b) => a.wineName.localeCompare(b.wineName));
 
             for (let { wineName, wineType, paid } of sorted) {
-                if (paid == 'true') {
+                if (paid == true) {
                     result.push(`${wineName} > ${wineType} - Has Paid.`)
                 } else {
                     result.push(`${wineName} > ${wineType} - Not Paid.`)
                 }
             }
-            return result.join('\n');
+            return result.join('\n').trim();
         }
 
         let data = this.wines.find(wine => wine.wineType == wineType);
