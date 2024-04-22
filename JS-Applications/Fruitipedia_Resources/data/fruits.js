@@ -14,14 +14,12 @@ export async function getFruitById(id) {
     return get(endpoints.details + id);
 }
 
-export async function createFruit(item, imageUrl, price, availability, type, description) {
+export async function createFruit(name, imageUrl, description, nutrition) {
     return post(endpoints.fruits, {
-        item,
+        name,
         imageUrl,
-        price,
-        availability,
-        type,
-        description
+        description,
+        nutrition
     })
 }
 
