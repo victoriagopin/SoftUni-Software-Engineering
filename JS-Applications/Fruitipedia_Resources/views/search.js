@@ -17,19 +17,20 @@ const searchTemplate = (handler, result) => html`
   </form>
 </div>
 <h4>Results:</h4>
-  <div class="search-result">
-  ${result ? fruitTemplate(result) : null}
+  ${result ? fruitTemplate(result) : html`
+  <p class="no-result">No result.</p>`}
   </div>
   </section>`;
 
 const fruitTemplate = (fruit) => html`
 ${fruit ? fruit.map(x => html`
+<div class="search-result">
 <div class="fruit">
 <img src=${x.imageUrl} alt="example1" />
 <h3 class="title">${x.name}</h3>
 <p class="description">${x.description}</p>
 <a class="details-btn" href="/catalog/${x._id}">More Info</a>
-</div>`) : html`<p class="no-result">No result.</p>`} 
+</div></div>`) : null} 
 `;
 
 export async function showSearch(){
@@ -41,6 +42,9 @@ export async function showSearch(){
 async function onSearch(data, form){
   const {search} = data;
 
+  if(!search){
+    return alert('Search field is empty!');
+  }
   const result = await searchFruit(search);
   const handler = createSubmitHandler(onSearch);
   render(searchTemplate(handler, result));
