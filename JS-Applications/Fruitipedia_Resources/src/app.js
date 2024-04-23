@@ -2,6 +2,7 @@ import { logout } from "../data/user.js";
 import { showCatalog } from "../views/catalog.js";
 import { showCreate } from "../views/create.js";
 import { showDetails } from "../views/details.js";
+import { showEdit } from "../views/edit.js";
 import { showHome } from "../views/home.js";
 import { showLogin } from "../views/login.js";
 import { showRegister } from "../views/regiester.js";
@@ -17,6 +18,7 @@ page('/register', showRegister);
 page('/catalog/:id', showDetails);
 page('/create', showCreate);
 page('/search', showSearch);
+page('/edit/:id', showEdit)
 
 document.getElementById('logoutBtn').addEventListener('click', async () => {
     logout();

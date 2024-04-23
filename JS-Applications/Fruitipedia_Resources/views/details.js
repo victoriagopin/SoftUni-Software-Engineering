@@ -18,7 +18,7 @@ const detailsTemplate = (fruit, isOwner, onDelete) => html`
     </div>
      <!--Edit and Delete are only for creator-->
      ${isOwner ? html`<div id="action-buttons">
-     <a href="" id="edit-btn">Edit</a>
+     <a href="/edit/${fruit._id}" id="edit-btn">Edit</a>
      <a href="javascript:void(0)" id="delete-btn" @click=${onDelete}>Delete</a>
    </div>` : null}
   </div>

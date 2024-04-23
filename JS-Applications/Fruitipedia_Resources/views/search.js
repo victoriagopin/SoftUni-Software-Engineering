@@ -28,7 +28,7 @@ ${fruit ? fruit.map(x => html`
 <img src=${x.imageUrl} alt="example1" />
 <h3 class="title">${x.name}</h3>
 <p class="description">${x.description}</p>
-<a class="details-btn" href="/details/${x._id}">More Info</a>
+<a class="details-btn" href="/catalog/${x._id}">More Info</a>
 </div>`) : html`<p class="no-result">No result.</p>`} 
 `;
 
