@@ -3,7 +3,7 @@ import { get, post, put, del } from "./request.js";
 const endpoints = {
     dashboard: '/data/fruits?sortBy=_createdOn%20desc',
     fruits: '/data/fruits',
-    details: '/data/fruits/'
+    details: '/data/fruits/',
 }
 
 export async function getAllFruits() {
@@ -29,4 +29,8 @@ export async function updateFruit(id, data) {
 
 export async function deleteFruit(id) {
     return del(endpoints.details + id);
+}
+
+export async function searchFruit(query){
+    return await get(endpoints.details + `?where=name%20LIKE%20%22${query}%22`)
 }

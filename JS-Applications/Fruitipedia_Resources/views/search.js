@@ -1,11 +1,13 @@
+import { getAllFruits, searchFruit } from '../data/fruits.js';
 import {html, render} from '../src/lib.js';
+import { createSubmitHandler } from '../src/util.js';
 
-const searchTemplate = () => html`
+const searchTemplate = (handler, result) => html`
 <section id="search">
 
 <div class="form">
   <h2>Search</h2>
-  <form class="search-form">
+  <form class="search-form" @submit=${handler}>
     <input
       type="text"
       name="search"
@@ -16,22 +18,30 @@ const searchTemplate = () => html`
 </div>
 <h4>Results:</h4>
   <div class="search-result">
- <p class="no-result">No result.</p>
-  <!--If there are matches display a div with information about every fruit-->
- <div class="fruit">
-  <img src="./images/fruit 1.png" alt="example1" />
-  <h3 class="title">Pineapple</h3>
-  <p class="description">The pineapple is a tropical plant with an edible fruit.
-    It is the most economically significant plant in the family Bromeliaceae.The 
-    pineapple is indigenous to South America.
-    Pineapples grow as a small shrub, the individual flowers of the unpollinated plant
-     fuse to form a multiple fruit. The plant is normally propagated from the offset produced
-      at the top of the fruit,or from a side shoot, and typically matures within a year.</p>
-  <a class="details-btn" href="">More Info</a>
-</div>
+  ${result ? fruitTemplate(result) : null}
   </div>
-        </section>`;
+  </section>`;
 
-export function showSearch(){
-    render(searchTemplate());
+const fruitTemplate = (fruit) => html`
+${fruit ? fruit.map(x => html`
+<div class="fruit">
+<img src=${x.imageUrl} alt="example1" />
+<h3 class="title">${x.name}</h3>
+<p class="description">${x.description}</p>
+<a class="details-btn" href="/details/${x._id}">More Info</a>
+</div>`) : html`<p class="no-result">No result.</p>`} 
+`;
+
+export async function showSearch(){
+  const handler = createSubmitHandler(onSearch);
+    render(searchTemplate(handler));
+
+}
+
+async function onSearch(data, form){
+  const {search} = data;
+
+  const result = await searchFruit(search);
+  const handler = createSubmitHandler(onSearch);
+  render(searchTemplate(handler, result));
 }
