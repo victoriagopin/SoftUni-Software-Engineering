@@ -1,6 +1,7 @@
 import { getItemById, updateItem } from '../data/items.js';
 import { html, render, page } from '../lib.js';
 import { createSubmitHandler } from '../util.js';
+import { notify } from './notify.js';
 
 const editTemplate = (item, onEdit) => html`
       <section id="edit">
@@ -31,7 +32,7 @@ export async function showEdit(ctx) {
 
     async function onEdit({ item, imageUrl, price, availability, type, description }) {
         if (!item || !imageUrl || !price || !availability || !type || !description) {
-            return alert('All fields are required!');
+            return notify('All fields are required!');
         }
 
         await updateItem(id, { item, imageUrl, price, availability, type, description });
