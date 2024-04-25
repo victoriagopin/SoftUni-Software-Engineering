@@ -32,3 +32,4 @@ export async function updateAlbum(id, data) {
 export async function deleteAlbum(id) {
     return del(endpoints.details + id);
 }
+

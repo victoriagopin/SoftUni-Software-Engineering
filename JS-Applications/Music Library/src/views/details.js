@@ -1,4 +1,4 @@
-import { deleteAlbum, getAlbumById } from '../data/albums.js';
+import { deleteAlbum, getAlbumById, updateAlbum } from '../data/albums.js';
 import { html, render, page } from '../lib.js';
 import { getUserData } from '../util.js';
 
@@ -18,7 +18,7 @@ const detailsTemplate = (album, hasUser, isOwner, onDelete, onLike) => html`
             <p><strong>Label:</strong><span id="details-label">${album.label}</span></p>
             <p><strong>Sales:</strong><span id="details-sales">${album.sales}</span></p>
           </div>
-          <div id="likes">Likes: <span id="likes-count">${album.likes}</span></div>
+          <div id="likes">Likes: <span id="likes-count">0</span></div>
 
           ${hasUser && !isOwner ? html` <div id="action-buttons">
             <a href="javascript:void(0)" id="like-btn" @click=${onLike}>Like</a>
@@ -34,7 +34,6 @@ const detailsTemplate = (album, hasUser, isOwner, onDelete, onLike) => html`
 export async function showDetails(ctx) {
     const id = ctx.params.id;
     const album = await getAlbumById(id);
-    album.likes = 0;
     const user = getUserData();
     const hasUser = !!user;
     const isOwner = hasUser && user._id == album._ownerId;
