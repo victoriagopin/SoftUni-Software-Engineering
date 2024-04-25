@@ -2,7 +2,7 @@ import { deleteAlbum, getAlbumById } from '../data/albums.js';
 import { html, render, page } from '../lib.js';
 import { getUserData } from '../util.js';
 
-const detailsTemplate = (album, hasUser, isOwner, onDelete) => html`
+const detailsTemplate = (album, hasUser, isOwner, onDelete, onLike) => html`
       <section id="details">
         <div id="details-wrapper">
           <p id="details-title">Album Details</p>
@@ -18,10 +18,10 @@ const detailsTemplate = (album, hasUser, isOwner, onDelete) => html`
             <p><strong>Label:</strong><span id="details-label">${album.label}</span></p>
             <p><strong>Sales:</strong><span id="details-sales">${album.sales}</span></p>
           </div>
-          <div id="likes">Likes: <span id="likes-count">0</span></div>
+          <div id="likes">Likes: <span id="likes-count">${album.likes}</span></div>
 
           ${hasUser && !isOwner ? html` <div id="action-buttons">
-            <a href="javascript:void(0)" id="like-btn">Like</a>
+            <a href="javascript:void(0)" id="like-btn" @click=${onLike}>Like</a>
             </div>` : null}
           ${isOwner ? html` <div id="action-buttons">
             <a href="/edit/${album._id}" id="edit-btn">Edit</a>
@@ -34,10 +34,11 @@ const detailsTemplate = (album, hasUser, isOwner, onDelete) => html`
 export async function showDetails(ctx) {
     const id = ctx.params.id;
     const album = await getAlbumById(id);
+    album.likes = 0;
     const user = getUserData();
     const hasUser = !!user;
     const isOwner = hasUser && user._id == album._ownerId;
-    render(detailsTemplate(album, hasUser, isOwner, onDelete));
+    render(detailsTemplate(album, hasUser, isOwner, onDelete, onLike));
 
     async function onDelete() {
         const choice = confirm('Are you sure?');
@@ -45,5 +46,10 @@ export async function showDetails(ctx) {
             await deleteAlbum(id);
             page.redirect('/catalog');
         }
+    }
+
+    function onLike(){
+      album.likes += 1;
+      render(detailsTemplate(album, hasUser, isOwner, onDelete, onLike));
     }
 }
