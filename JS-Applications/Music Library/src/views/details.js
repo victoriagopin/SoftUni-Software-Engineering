@@ -1,8 +1,9 @@
-import { deleteAlbum, getAlbumById, updateAlbum } from '../data/albums.js';
+import { deleteAlbum, getAlbumById } from '../data/albums.js';
+import {  getPersonByAlbumId, isLiked, like } from '../data/likes.js';
 import { html, render, page } from '../lib.js';
 import { getUserData } from '../util.js';
 
-const detailsTemplate = (album, hasUser, isOwner, onDelete, onLike) => html`
+const detailsTemplate = (album, hasUser, isOwner, likes, hasUserLiked, onDelete, onLike) => html`
       <section id="details">
         <div id="details-wrapper">
           <p id="details-title">Album Details</p>
@@ -18,26 +19,35 @@ const detailsTemplate = (album, hasUser, isOwner, onDelete, onLike) => html`
             <p><strong>Label:</strong><span id="details-label">${album.label}</span></p>
             <p><strong>Sales:</strong><span id="details-sales">${album.sales}</span></p>
           </div>
-          <div id="likes">Likes: <span id="likes-count">0</span></div>
+          <div id="likes">Likes: <span id="likes-count">${likes}</span></div>
 
-          ${hasUser && !isOwner ? html` <div id="action-buttons">
-            <a href="javascript:void(0)" id="like-btn" @click=${onLike}>Like</a>
-            </div>` : null}
-          ${isOwner ? html` <div id="action-buttons">
-            <a href="/edit/${album._id}" id="edit-btn">Edit</a>
-            <a href="javascript:void(0)" id="delete-btn" @click=${onDelete}>Delete</a>
-          </div>` : null}
+          ${hasUser ? html` 
+          <div id="action-buttons">
+          ${isOwner ? html`
+          <a href="/edit/${album._id}" id="edit-btn">Edit</a>
+          <a href="javascript:void(0)" id="delete-btn" @click=${onDelete}>Delete</a>` : (
+            !hasUserLiked ? html`<a href="javascript:void(0)" id="like-btn" @click=${onLike}>Like</a>` : null)}` : null}
          
         </div>
       </section>`;
 
 export async function showDetails(ctx) {
     const id = ctx.params.id;
-    const album = await getAlbumById(id);
+    const requests = [
+      getAlbumById(id),
+      getPersonByAlbumId(id)
+    ]
+    
     const user = getUserData();
+    if(user){
+      requests.push(isLiked(id, user._id));
+    }
+
+    const [album, likes, hasUserLiked] = await Promise.all(requests);
+
     const hasUser = !!user;
     const isOwner = hasUser && user._id == album._ownerId;
-    render(detailsTemplate(album, hasUser, isOwner, onDelete, onLike));
+    render(detailsTemplate(album, hasUser, isOwner, likes,hasUserLiked,onDelete, onLike));
 
     async function onDelete() {
         const choice = confirm('Are you sure?');
@@ -47,8 +57,8 @@ export async function showDetails(ctx) {
         }
     }
 
-    function onLike(){
-      album.likes += 1;
-      render(detailsTemplate(album, hasUser, isOwner, onDelete, onLike));
+    async function onLike(){
+      await like(id);
+      page.redirect('/catalog/' + id);
     }
 }
