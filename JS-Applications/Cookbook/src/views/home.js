@@ -8,7 +8,7 @@ ${recepies.length ? recepies.map(recepieTemplate): html`
 `
 
 const recepieTemplate = (recepie) => html`
-<article class="preview" @click=${toggle} data-id=${recepie._id}>
+<article id="dashboard" class="preview" @click=${toggle} data-id=${recepie._id}>
  <div class="title" data-id=${recepie._id}>
                 <h2 data-id=${recepie._id}>${recepie.name}</h2>
             </div>
