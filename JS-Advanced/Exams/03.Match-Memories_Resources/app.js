@@ -99,76 +99,38 @@ async function onAdd(){
     await onLoad();
 }
 
-async function onEdit() {
-    try {
-        const matchId = formElement.getAttribute('data-match-id');
+async function onEdit(){
+    const matchId = formElement.getAttribute('data-match-id');
 
-        const host = hostInput.value;
-        const score = scoreInput.value;
-        const guest = guestInput.value;
+    const host = hostInput.value;
+    const score = scoreInput.value;
+    const guest = guestInput.value;
 
-        if (!host || !score || !guest) {
-            console.warn('Incomplete match data provided for editing.');
-            return;
-        }
 
-        clearInputFields();
-
-        const response = await fetch(`${baseURL}/${matchId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ host, score, guest, _id: matchId }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to update match. Status: ${response.status}`);
-        }
-
-        await onLoad();
-
-        editBtn.setAttribute('disabled', 'disabled');
-        addMatchBtn.removeAttribute('disabled');
-        formElement.removeAttribute('data-match-id');
-    } catch (error) {
-        console.error('Error in onEdit:', error);
+    if(!host || !score || !guest){
+        return;
     }
+
+    clearInputFields();
+
+    await fetch(`${baseURL}/${matchId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({host, score, guest, _id : matchId})
+    })
+
+    await onLoad();
+
+    editBtn.setAttribute('disabled', 'disabled');
+
+    addMatchBtn.removeAttribute('disabled');
+
+    formElement.removeAttribute('data-match-id');
+    
+    
 }
-
-
-// async function onEdit(){
-//     const matchId = formElement.getAttribute('data-match-id');
-
-//     const host = hostInput.value;
-//     const score = scoreInput.value;
-//     const guest = guestInput.value;
-
-
-//     if(!host || !score || !guest){
-//         return;
-//     }
-
-//     clearInputFields();
-
-//     await fetch(`${baseURL}/${matchId}`, {
-//         method: 'PUT',
-//         headers: {
-//             'Content-Type' : 'application/json'
-//         },
-//         body : JSON.stringify({host, score, guest, _id : matchId})
-//     })
-
-//     await onLoad();
-
-//     editBtn.setAttribute('disabled', 'disabled');
-
-//     addMatchBtn.removeAttribute('disabled');
-
-//     formElement.removeAttribute('data-match-id');
-    
-    
-// }
 
 function clearInputFields(){
     hostInput.value = '';
