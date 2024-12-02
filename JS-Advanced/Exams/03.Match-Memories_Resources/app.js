@@ -99,18 +99,14 @@ async function onAdd(){
     await onLoad();
 }
 
-async function onEdit(){
+async function onEdit(e){
+    e.preventDefault();
     const matchId = formElement.getAttribute('data-match-id');
 
     const host = hostInput.value;
     const score = scoreInput.value;
     const guest = guestInput.value;
-
-
-    if(!host || !score || !guest){
-        return;
-    }
-
+    
     clearInputFields();
 
     await fetch(`${baseURL}/${matchId}`, {
