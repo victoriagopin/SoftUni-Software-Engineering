@@ -7,6 +7,7 @@ const hostInput = document.getElementById('host');
 const scoreInput = document.getElementById('score');
 const guestInput = document.getElementById('guest');
 const editBtn = document.getElementById('edit-match');
+const formElement = document.querySelector('#form form');
 
 loadBtn.addEventListener('click', onLoad);
 addMatchBtn.addEventListener('click', onAdd);
@@ -19,19 +20,19 @@ async function onLoad(){
 
     const matches = Object.values(data);
 
-    matches.forEach((match) => createElements(match));
-
+    const matchElements = matches.map(match => createElements(match.host, match.score, match.guest, match._id));
+    listEl.append(...matchElements);
 }
 
-function createElements(match){
+function createElements(host, score, guest, matchId){
    const pHost = document.createElement('p');
-    pHost.textContent = match.host;
+    pHost.textContent = host;
 
    const pResult = document.createElement('p');
-    pResult.textContent = match.score;
+    pResult.textContent = score;
 
    const pGuest = document.createElement('p');
-   pGuest.textContent = match.guest;
+   pGuest.textContent = guest;
 
    const divInfo = document.createElement('div');
    divInfo.classList.add('info');
@@ -44,14 +45,13 @@ function createElements(match){
    changeBtn.classList.add('change-btn');
 
    changeBtn.addEventListener('click', () => {
-    hostInput.value = match.host;
-    scoreInput.value = match.score;
-    guestInput.value = match.guest;
+    hostInput.value = host;
+    scoreInput.value = score;
+    guestInput.value = guest;
 
-    addMatchBtn.setAttribute('disabled', 'disabled');
     editBtn.removeAttribute('disabled');
-    editBtn.setAttribute('data-id', `${match._id}`);
-    
+    addMatchBtn.setAttribute('disabled', 'disabled');
+    formElement.setAttribute('data-match-id', matchId);
    })
 
    const deleteBtn = document.createElement('button');
@@ -59,13 +59,12 @@ function createElements(match){
    deleteBtn.classList.add('delete-btn');
 
    deleteBtn.addEventListener('click', async () => {
-    const id = match._id;
     
-    const res = await fetch(`${baseURL}/${id}`, {
+     await fetch(`${baseURL}/${matchId}`, {
         method: 'DELETE'
     });
 
-    onLoad();
+   await onLoad();
    })
 
    const divBtns = document.createElement('div');
@@ -79,7 +78,7 @@ function createElements(match){
    liEl.appendChild(divInfo);
    liEl.appendChild(divBtns);
 
-   listEl.appendChild(liEl);
+   return liEl;
 }
 
 async function onAdd(){
@@ -97,35 +96,79 @@ async function onAdd(){
         body : JSON.stringify({host, score, guest})
     })
 
-    onLoad();
+    await onLoad();
 }
 
-async function onEdit(){
-    const host = hostInput.value;
-    const score = scoreInput.value;
-    const guest = guestInput.value;
-    const id = editBtn.getAttribute('data-id');
+async function onEdit() {
+    try {
+        const matchId = formElement.getAttribute('data-match-id');
 
-    if(!host || !score || !guest){
-        return;
+        const host = hostInput.value;
+        const score = scoreInput.value;
+        const guest = guestInput.value;
+
+        if (!host || !score || !guest) {
+            console.warn('Incomplete match data provided for editing.');
+            return;
+        }
+
+        clearInputFields();
+
+        const response = await fetch(`${baseURL}/${matchId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ host, score, guest, _id: matchId }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to update match. Status: ${response.status}`);
+        }
+
+        await onLoad();
+
+        editBtn.setAttribute('disabled', 'disabled');
+        addMatchBtn.removeAttribute('disabled');
+        formElement.removeAttribute('data-match-id');
+    } catch (error) {
+        console.error('Error in onEdit:', error);
     }
-
-    clearInputFields();
-    editBtn.setAttribute('disabled', 'disabled');
-    editBtn.removeAttribute('data-id');
-    addMatchBtn.removeAttribute('disabled');
-
-    const res = await fetch(`${baseURL}/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type' : 'application/json'
-        },
-        body : JSON.stringify({host, score, guest, _id : id})
-    })
-
-    onLoad();
-    
 }
+
+
+// async function onEdit(){
+//     const matchId = formElement.getAttribute('data-match-id');
+
+//     const host = hostInput.value;
+//     const score = scoreInput.value;
+//     const guest = guestInput.value;
+
+
+//     if(!host || !score || !guest){
+//         return;
+//     }
+
+//     clearInputFields();
+
+//     await fetch(`${baseURL}/${matchId}`, {
+//         method: 'PUT',
+//         headers: {
+//             'Content-Type' : 'application/json'
+//         },
+//         body : JSON.stringify({host, score, guest, _id : matchId})
+//     })
+
+//     await onLoad();
+
+//     editBtn.setAttribute('disabled', 'disabled');
+
+//     addMatchBtn.removeAttribute('disabled');
+
+//     formElement.removeAttribute('data-match-id');
+    
+    
+// }
 
 function clearInputFields(){
     hostInput.value = '';
