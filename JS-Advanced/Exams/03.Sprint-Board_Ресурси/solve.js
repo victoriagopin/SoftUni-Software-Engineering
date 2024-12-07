@@ -3,13 +3,9 @@ function attachEvents() {
 
     const loadBtn = document.getElementById('load-board-btn');
     const addTaskBtn = document.getElementById('create-task-btn');
-    const toDoSection = document.getElementById('todo-section');
     const ulToDo = document.querySelector("#todo-section > ul");
-    const progressSection = document.getElementById('in-progress-section');
     const ulProgress = document.querySelector("#in-progress-section > ul");
-    const reviewSection = document.getElementById('code-review-section');
     const ulReview = document.querySelector("#code-review-section > ul");
-    const doneSection = document.getElementById('done-section');
     const ulDone = document.querySelector("#done-section > ul");
     const titleInput = document.getElementById('title');
     const descriptionInput = document.getElementById('description');
@@ -46,8 +42,54 @@ function attachEvents() {
         } else if ( status == 'Code Review'){
             button.textContent = 'Move to Done'
         } else if (status == 'Done'){
-            button.textContent = 'Close'
+            button.textContent = 'Close';
         }
+
+        button.addEventListener('click', async() => {
+      
+            if(button.textContent == 'Move to In Progress'){
+                await fetch(`${baseURL}${taskId}`, {
+                    method : 'PATCH',
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({title, description, status : 'In Progress', _id : taskId})
+                })
+                await onLoad();
+            } else if(button.textContent == 'In Progress'){
+                await fetch(`${baseURL}${taskId}`, {
+                    method : 'PATCH',
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({title, description, status : 'Move to Code Review', _id : taskId})
+                })
+                await onLoad();
+            }  else if(button.textContent == 'Move to Code Review'){
+                await fetch(`${baseURL}${taskId}`, {
+                    method : 'PATCH',
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({title, description, status : 'Code Review', _id : taskId})
+                })
+                await onLoad();
+            }  else if(button.textContent == 'Move to Done'){
+                await fetch(`${baseURL}${taskId}`, {
+                    method : 'PATCH',
+                    headers: {
+                        'Content-Type' : 'application/json'
+                    },
+                    body: JSON.stringify({title, description, status : 'Done', _id : taskId})
+                })
+                await onLoad();
+            }  else if(button.textContent == 'Close'){
+                    await fetch(`${baseURL}${taskId}`, {
+                        method : 'DELETE'
+                    })
+                await onLoad();
+            }
+        })
 
 
         const liEl = document.createElement('li');
@@ -83,7 +125,7 @@ function attachEvents() {
             body : JSON.stringify({title, description, status : 'ToDo'})
         });
 
-        onLoad();
+        await onLoad();
     }
 
 
